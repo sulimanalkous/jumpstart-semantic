@@ -6,7 +6,9 @@
 
   <body>
     <%= render 'shared/navbar' %>
+    <%= semantic_breadcrumbs %>
     <%= render 'shared/notices' %>
+    <%= semantic_flash %>
 
     <div class="container">
       <%= yield %>
