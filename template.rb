@@ -17,7 +17,7 @@ def add_template_repository_to_source_path
       tempdir
     ].map(&:shellescape).join(" ")
 
-    if (branch = __FILE__[%r{jumpstart/(.+)/template.rb}, 1])
+    if (branch = __FILE__[%r{jumpstart-semantic/(.+)/template.rb}, 1])
       Dir.chdir(tempdir) { git checkout: branch }
     end
   else
@@ -27,10 +27,10 @@ end
 
 def add_gems
   gem 'administrate', '~> 0.10.0'
-  gem 'bootstrap', '~> 4.1', '>= 4.1.1'
+  gem 'semantic-ui-sass', git: 'https://github.com/doabit/semantic-ui-sass.git'
   gem 'data-confirm-modal', '~> 1.6', '>= 1.6.2'
   gem 'devise', '~> 4.4', '>= 4.4.3'
-  gem 'devise-bootstrapped', github: 'excid3/devise-bootstrapped', branch: 'bootstrap4'
+  gem 'devise-semantified', git: 'https://github.com/ajex13/devise-semantified.git'
   gem 'devise_masquerade', '~> 0.6.2'
   gem 'font-awesome-sass', '~> 5.5', '>= 5.5.0.1'  
   gem 'foreman', '~> 0.84.0'
@@ -57,6 +57,28 @@ def set_application_name
   puts "You can change application name inside: ./config/application.rb"
 end
 
+def add_database
+  inside 'config' do
+    remove_file 'database.yml'
+    create_file 'database.yml' do <<-EOF
+      default: &default
+        adapter: mysql2
+
+      development:
+        default: &default
+        database: #{app_name}_development
+        adapter: mysql2
+        encoding: utf8
+        pool: 5
+        username: root
+        password: mmd123
+        host: localhost
+      EOF
+    end
+  end
+end
+
+
 def add_users
   # Install Devise
   generate "devise:install"
@@ -66,8 +88,8 @@ def add_users
               env: 'development'
   route "root to: 'home#index'"
 
-  # Devise notices are installed via Bootstrap
-  generate "devise:views:bootstrapped"
+  # Devise notices are installed via Semantic-ui
+  generate "devise:views:semantified"
 
   # Create Devise User
   generate :devise, "User",
@@ -95,14 +117,14 @@ def add_users
   inject_into_file("app/models/user.rb", "omniauthable, :masqueradable, :", after: "devise :")
 end
 
-def add_bootstrap
+def add_semantic
   # Remove Application CSS
   run "rm app/assets/stylesheets/application.css"
 
-  # Add Bootstrap JS
+  # Add Semantic
   insert_into_file(
     "app/assets/javascripts/application.js",
-    "\n//= require jquery\n//= require popper\n//= require bootstrap\n//= require data-confirm-modal\n//= require local-time",
+    "\n//= require semantic-ui",
     after: "//= require rails-ujs"
   )
 end
@@ -225,9 +247,10 @@ add_gems
 
 after_bundle do
   set_application_name
+  add_database
   stop_spring
   add_users
-  add_bootstrap
+  add_semantic
   add_sidekiq
   add_foreman
   add_webpack
