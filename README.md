@@ -1,12 +1,13 @@
-# Rails Jumpstart
+# Rails Jumpstart-Semantic
 
-It's like Laravel Spark, for Rails. All your Rails apps should start off with a bunch of great defaults.
+All your Rails apps should start off with a bunch of great defaults with
+semantic-ui framework ready.
 
 **Note:** Requires Rails 5.2
 
 ## Getting Started
 
-Jumpstart is a Rails template, so you pass it in as an option when creating a new app.
+Jumpstart-semantic is a Rails template.
 
 #### Requirements
 
@@ -19,46 +20,11 @@ You'll need the following installed to run the template successfully:
 
 #### Creating a new app
 
-```bash
-rails new myapp -d postgresql -m https://raw.githubusercontent.com/excid3/jumpstart/master/template.rb
-```
-
-Or if you have downloaded this repo, you can reference template.rb locally:
+If you have downloaded this repo, you can reference template.rb locally:
 
 ```bash
 rails new myapp -d postgresql -m template.rb
 ```
-
-#### Authenticate with social networks
-
-We use the encrypted Rails Credentials for app_id and app_secrets when it comes to omniauth authentication. Edit them as so:
-
-```
-EDITOR=vim rails credentials:edit
-```
-
-Make sure your file follow this structure:
-
-```yml
-secret_key_base: [your-key]
-development:
-  github:
-    app_id: something
-    app_secret: something
-    options:
-      scope: 'user:email'
-      whatever: true
-production:
-  github:
-    app_id: something
-    app_secret: something
-    options:
-      scope: 'user:email'
-      whatever: true
-```
-
-With the environment, the service and the app_id/app_secret. If this is done correctly, you should see login links
-for the services you have added to the encrypted credentials using `EDITOR=vim rails credentials:edit`
 
 #### Cleaning up
 
@@ -68,3 +34,11 @@ spring stop
 cd ..
 rm -rf myapp
 ```
+
+#### References
+
+I modify jumpstart repo that i take it from "Chris Oliver" on https://github.com/excid3/jumpstart and replace bootstrap framework with semantic-ui framework.
+
+Thanks for Chris Oliver.
+
+Semantic-ui repo on https://github.com/doabit/semantic-ui-sass
